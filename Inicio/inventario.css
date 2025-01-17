@@ -17,7 +17,7 @@
   
   /* Navbar styles */
   .navbar {
-    background-color: #1e1e2f; /* Fondo oscuro */
+    background-color: #0d0d22; /* Fondo oscuro */
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
@@ -26,7 +26,7 @@
   }
   
   .navbar .logo img {
-    max-height: 50px; /* Ajusta el tamaño del logo */
+    max-height: 100px; /* Ajusta el tamaño del logo */
   }
   
   .nav-links {
@@ -81,7 +81,7 @@
   .submenu-btn {
     padding: 10px 20px;
     border: none;
-    background-color: #eee;
+    background-color: #817373;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9rem;
@@ -106,6 +106,7 @@
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
+    background-color: #0d0d22;
     border-radius: 4px 0 0 4px;
   }
   
