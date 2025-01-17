@@ -8,7 +8,7 @@
   /* Body styles */
   body {
     font-family: 'Arial', sans-serif;
-    background-color: #f5f5f5; /* Fondo claro */
+    background-color: #1e1e2f; /* Fondo oscuro */
     color: #333;
     display: flex;
     flex-direction: column;
@@ -45,7 +45,7 @@
   
   .nav-links li a.active,
   .nav-links li a:hover {
-    background-color: #ff5555;
+    background-color: #2e04c5;
   }
   
   .user-cart a img {
@@ -68,7 +68,7 @@
     font-size: 1.8rem;
     margin-bottom: 20px;
     text-align: center;
-    color: #1e1e2f;
+    color: #fdfdfd;
   }
   
   /* Submenu styles */
@@ -132,7 +132,7 @@
   }
   
   .card {
-    background-color: #fff;
+    background-color: #282a36;
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -149,12 +149,12 @@
   .card h2 {
     font-size: 1rem;
     margin-bottom: 8px;
-    color: #1e1e2f;
+    color: #ffffff;
   }
   
   .card p {
     font-size: 0.85rem;
-    color: #666;
+    color: #869197;
   }
   
   .card:hover {
