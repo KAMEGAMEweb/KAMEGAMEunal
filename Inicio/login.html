@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kame - Game | Login</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-form">
+      <h1>Kame - Game</h1>
+      <h2>Login</h2>
+      <form action="/login" method="POST">
+        <!-- Email Field -->
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        
+        <!-- Form Options -->
+        <div class="form-options">
+          <label>
+            <input type="checkbox" name="remember"> Remember Me
+          </label>
+          <a href="#" class="forgot-password">Forgot Your Password?</a>
+        </div>
+        
+        <!-- Submit Button -->
+        <button type="submit">Log In</button>
+      </form>
+      <p class="signup-link">Don't have an account? <a href="register.html">Sign up now</a></p>
+    </div>
+    <div class="login-illustration">
+      <img src="imagenes/inicio.jpg" alt="Rocket Illustration">
+    </div>
+  </div>
+</body>
+</html>

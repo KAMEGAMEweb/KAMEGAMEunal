@@ -1,0 +1,184 @@
+/* styles.css */
+
+/* General reset and box model settings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body styles */
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1e1e2f; /* Fondo oscuro */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Altura mínima de pantalla */
+    padding: 20px; /* Padding para pantallas pequeñas */
+  }
+  
+  /* Login container styles */
+  .login-container {
+    display: flex;
+    flex-direction: column; /* Columna por defecto para pantallas pequeñas */
+    background-color: #282a36;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+    max-width: 900px;
+    width: 100%;
+  }
+  
+  /* Form section */
+  .login-form {
+    padding: 40px 20px; /* Padding adaptable */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Titles */
+  .login-form h1 {
+    font-size: 1.8rem; /* Tamaño de fuente adaptable */
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .login-form h2 {
+    font-size: 1.2rem; /* Tamaño más pequeño en pantallas pequeñas */
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ffb86c;
+  }
+  
+  /* Form group styles */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #44475a;
+    border-radius: 4px;
+    background-color: #383a59;
+    color: #fff;
+  }
+  
+  /* Form options */
+  .form-options {
+    display: flex;
+    flex-direction: column; /* Column layout for small screens */
+    align-items: flex-start;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  
+  .form-options a {
+    color: #8be9fd;
+    text-decoration: none;
+    margin-top: 10px; /* Spacing for small screens */
+  }
+  
+  /* Submit button */
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #ff5555;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #ff4444;
+  }
+  
+  /* Signup link */
+  .signup-link {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  
+  .signup-link a {
+    color: #50fa7b;
+    text-decoration: none;
+  }
+  
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Illustration section */
+  .login-illustration {
+    display: none; /* Default: hidden for small screens */
+    background-color: #44475a;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-illustration img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* --- Responsive Design --- */
+  
+  /* Medium screens: Tablets (min-width: 768px) */
+  @media (min-width: 768px) {
+    .login-container {
+      flex-direction: row; /* Form and illustration side by side */
+    }
+  
+    .form-options {
+      flex-direction: row; /* Inline layout for options */
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    .form-options a {
+      margin-top: 0;
+    }
+  
+    .login-illustration {
+      display: flex;
+    }
+  }
+  
+  /* Large screens: Desktops (min-width: 1024px) */
+  @media (min-width: 1024px) {
+    .login-container {
+      max-width: 1200px; /* Wider container */
+    }
+  
+    .login-form {
+      padding: 40px; /* More padding on larger screens */
+    }
+  
+    .login-form h1 {
+      font-size: 2rem; /* Larger titles */
+    }
+  
+    .login-form h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
