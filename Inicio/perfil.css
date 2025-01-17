@@ -1,0 +1,240 @@
+/* --- Estilos Generales --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1e1e2f;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Navbar styles */
+.navbar {
+background-color: #0d0d22; /* Fondo oscuro */
+padding: 10px 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+color: #fff;
+}
+
+.navbar .logo img {
+max-height: 80px; /* Ajusta el tamaño del logo */
+}
+
+.nav-links {
+list-style: none;
+display: flex;
+gap: 15px;
+}
+
+.nav-links li a {
+color: #fff;
+text-decoration: none;
+padding: 8px 15px;
+border-radius: 4px;
+transition: background-color 0.3s;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover {
+background-color: #2e04c5;
+}
+
+.user-cart a img {
+width: 30px;
+margin-left: 10px;
+transition: transform 0.3s;
+}
+
+.user-cart a img:hover {
+transform: scale(1.1);
+}
+
+/* --- Contenedor Principal --- */
+.perfil-container {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* --- Estilos de la Barra Lateral --- */
+.sidebar {
+    background-color: #282a36;
+    padding: 20px;
+    border-radius: 8px;
+    width: 20%;
+    text-align: center;
+}
+
+.profile-image img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border-color: #fff;
+}
+
+.user-info {
+    margin-bottom: 20px;
+}
+
+/* Esto es variable arreglar */
+.xp-bar {
+    background-color: #44475a;
+    height: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+
+.xp-fill {
+    background-color: #2e04c5;
+    height: 100%;
+}
+
+.sidebar-menu {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.sidebar-menu li {
+    margin-bottom: 10px;
+}
+
+.sidebar-menu li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.sidebar-menu li a.active,
+.sidebar-menu li a:hover {
+    background-color: #2e04c5;
+}
+
+/* --- Sección Central --- */
+.profile-details {
+    flex: 1;
+    background-color: #282a36;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.profile-details h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #fdfdfd;
+}
+
+.user-data .data-field {
+    margin-bottom: 15px;
+}
+
+.data-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.data-field input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #44475a;
+    background-color: #1e1e2f;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.info-table {
+    margin-top: 20px;
+}
+
+.info-table h2 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #fdfdfd;
+}
+
+.info-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.info-table table tr {
+    border-bottom: 1px solid #44475a;
+}
+
+.info-table table td {
+    padding: 10px;
+    color: #bbb;
+}
+
+/* --- Sección de Favoritos --- */
+.favorites {
+    background-color: #282a36;
+    padding: 20px;
+    border-radius: 8px;
+    width: 18%;
+}
+
+/* Contenedor de cartas favoritas con scroll */
+.favorites {
+    height: 550px; /* Altura fija para permitir scroll */
+    overflow-y: auto; /* Barra de desplazamiento vertical */
+    padding: 10px;
+    background-color: #282a36;
+    border: 1px solid #282a36;
+    border-radius: 8px;
+}
+
+
+.favorites h2 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #fdfdfd;
+    text-align: center;
+}
+
+.favorite-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.card {
+    background-color: #44475a;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.card img {
+    width: 140px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.card p {
+    margin-bottom: 5px;
+    color: #bbb;
+}
+
+/* --- Pie de Página --- */
+.footer {
+    background-color: #0d0d22;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+}

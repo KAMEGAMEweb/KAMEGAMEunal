@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <!-- Enlace a la hoja de estilos externa -->
+    <link rel="stylesheet" href="perfil.css">
+</head>
+<body>
+  <!-- Barra de navegación -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="logo/logokamegame.webp" alt="Logo Kame Game">
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="tienda.html">Tienda</a></li>
+        <li><a href="duelo.html">Duelo</a></li>
+        <li><a href="inventario.html">Inventario</a></li>
+      </ul>
+      <div class="user-cart">
+        <a href="perfil.html"><img src="logo/logo perfil.webp" alt="Usuario"></a>
+        <a href="carrito.html"><img src="logo/logocarrito.png" alt="Carrito"></a>
+      </div>
+    </nav>
+  </header>
+
+    <!-- Contenedor principal para la página de perfil -->
+    <div class="perfil-container">
+        <!-- Sección izquierda: Información del usuario -->
+        <aside class="sidebar">
+            <!-- Imagen de perfil del usuario -->
+            <div class="profile-image">
+                <img src="logo/Pegasus.webp" alt="Imagen de Perfil">
+            </div>
+            <!-- Barra de experiencia y nivel del usuario -->
+            <div class="user-info">
+                <div class="xp-bar">
+                    <div class="xp-fill" style="width: 80%;"></div>
+                </div>
+                <p>XP: 800</p> <!-- Cambiar para que varie segun la exp -->
+                <p>Nivel: Novato</p> <!-- Cambiar para que varie segun la exp -->
+            </div>
+            <!-- Menú de navegación lateral -->
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active">Perfil</a></li>
+                <li><a href="#">Compras</a></li>
+                <li><a href="#">Ventas</a></li>
+                <li><a href="#">Actividad</a></li>
+                <li><a href="#">Transacciones</a></li>
+            </ul>
+        </aside>
+
+        <!-- Sección central: Información del usuario -->
+        <main class="profile-details">
+            <h1>Tu Perfil</h1>
+            <!-- Campos de información del usuario -->
+            <div class="user-data">
+                <div class="data-field">
+                    <label for="username">Nombre de usuario:</label>
+                    <input type="text" id="username" value="Pegasus" disabled> <!-- Cambiar para que varie segun el usuario -->
+                </div>
+                <div class="data-field">
+                    <label for="country">País:</label>
+                    <input type="text" id="country" value="PAIS" disabled> <!-- Cambiar para que varie segun el pais elegido -->
+                </div>
+            </div>
+            <!-- Tabla de información adicional -->
+            <div class="info-table">
+                <h2>Información</h2>
+                <table>
+                    <tr><td>Datos de mi cuenta</td></tr> <!-- Cambiar para que contenga el link a alguna info-->
+                    <tr><td>Seguridad y privacidad</td></tr>
+                    <tr><td>Comunicaciones y ayudas</td></tr>
+                </table>
+            </div>
+        </main>
+
+        <!-- Sección derecha: Cartas favoritas -->
+        <aside class="favorites">
+            <h2>Cartas Favoritas</h2>
+            <div class="favorite-cards">
+                <!-- Carta favorita individual -->
+                <div class="card">
+                    <img src="imagenes/AcientINV.jpg" alt="Carta favorita">
+                    <p>Producto</p>
+                </div>
+                <div class="card">
+                    <img src="imagenes/AlligatorINV.jpg" alt="Carta favorita">
+                    <p>Producto</p>
+                </div>
+                <div class="card">
+                    <img src="imagenes/NinjaINV.jpg" alt="Carta favorita">
+                    <p>Producto</p>
+                </div>
+                <div class="card">
+                    <img src="imagenes/WdjatINV.jpg" alt="Carta favorita">
+                    <p>Producto</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Pie de página -->
+    <footer class="footer">
+        <p>&copy; 2025 Kame-Game. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
