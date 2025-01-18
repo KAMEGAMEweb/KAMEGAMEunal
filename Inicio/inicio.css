@@ -61,7 +61,7 @@ transform: scale(1.1);
 /* Sección Noticias */
 .news {
     padding: 20px;
-    background-color: white;
+    background-color: #1e1e2f;
     margin: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -70,6 +70,7 @@ transform: scale(1.1);
 .news h2 {
     margin-bottom: 20px;
     font-size: 24px;
+    color: #fff;
 }
 
 .news-grid {
@@ -79,7 +80,7 @@ transform: scale(1.1);
 }
 
 .news-item {
-    background-color: #f9f9f9;
+    background-color: #0d0d22;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -100,7 +101,7 @@ transform: scale(1.1);
 /* Sección Tienda */
 .shop {
     padding: 20px;
-    background-color: white;
+    background-color: #1e1e2f;
     margin: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -109,6 +110,7 @@ transform: scale(1.1);
 .shop h2 {
     margin-bottom: 20px;
     font-size: 24px;
+    color: #fff;
 }
 
 .shop-grid {
@@ -118,7 +120,7 @@ transform: scale(1.1);
 }
 
 .shop-item {
-    background-color: #f9f9f9;
+    background-color: #0d0d22;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
