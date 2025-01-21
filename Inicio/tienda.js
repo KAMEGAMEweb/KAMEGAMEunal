@@ -1,25 +1,44 @@
-// tienda.js
+let originalCards = [];
+let displayedCards = [];
+const CARDS_PER_PAGE = 8;
+let currentPage = 1;
 
-let allCards = []; // Variable global para almacenar todas las cartas
-const CARDS_PER_PAGE = 10; // Número de cartas por página
-let currentPage = 1; // Página actual
+let activeFilters = {
+    name: '',
+    attribute: '',
+    level: '',
+    subtype: '',
+    priceRange: '',
+    sortOrder: 'default'
+};
 
-// Función para cargar el JSON
 async function loadCards() {
     try {
         const response = await fetch('imagenes/yu_gi_oh_detailed_cards.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
-        allCards = Object.values(data).flat();
+        // Filtrar solo cartas con nivel
+        originalCards = Object.values(data)
+            .flat()
+            .filter(card => card.level !== undefined && card.level !== null);
+
+        // Ordenar alfabéticamente por defecto
+        originalCards.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+        displayedCards = [...originalCards];
         renderCurrentPage();
         setupPagination();
     } catch (error) {
-        console.error('Error cargando las cartas:', error);
+        console.error('Error loading cards:', error);
+        document.getElementById('cardsContainer').innerHTML =
+            '<p class="error-message">Error cargando las cartas. Por favor, intenta más tarde.</p>';
     }
 }
 
-// Función para calcular el precio
 function calculatePrice(card) {
-    let basePrice = 100;
+    if (!card) return 100;
+    const basePrice = 100;
     if (!card.level) return basePrice;
 
     if (card.level <= 3) return 100;
@@ -28,44 +47,137 @@ function calculatePrice(card) {
     return 1000;
 }
 
-// Función para renderizar la página actual
-function renderCurrentPage() {
-    const container = document.getElementById('cardsContainer');
-    container.innerHTML = ''; // Limpiar el contenedor
+function isInLevelRange(cardLevel, levelRange) {
+    if (!levelRange) return true;
 
-    const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
-    const endIndex = startIndex + CARDS_PER_PAGE;
-    const cardsToShow = allCards.slice(startIndex, endIndex);
-
-    cardsToShow.forEach(card => {
-        const cardElement = document.createElement('div');
-        cardElement.className = 'card-item';
-        const price = calculatePrice(card);
-
-        cardElement.innerHTML = `
-            <img src="${card.image_url}" alt="${card.name}" 
-                 onerror="this.src='images/card-back.jpg'">
-            <div class="card-info">
-                <h4 class="card-name">${card.name}</h4>
-                ${card.level ? `<p class="card-level">Nivel ${card.level}</p>` : ''}
-                ${card.type ? `<p class="card-type">${card.type}</p>` : ''}
-                ${card.attribute ? `<p class="card-attribute">${card.attribute}</p>` : ''}
-                <p class="card-price">${price} PM</p>
-                <button class="btn" onclick="addToCart('${card.name}', ${price})">
-                    Agregar al Carrito
-                </button>
-            </div>
-        `;
-
-        container.appendChild(cardElement);
-    });
+    switch(levelRange) {
+        case '1-3': return cardLevel >= 1 && cardLevel <= 3;
+        case '4-5': return cardLevel >= 4 && cardLevel <= 5;
+        case '6-8': return cardLevel >= 6 && cardLevel <= 8;
+        case '10+': return cardLevel >= 10;
+        default: return true;
+    }
 }
 
-// Función para configurar la paginación
-// Función para configurar la paginación
+function isInPriceRange(cardPrice, priceRange) {
+    if (!priceRange) return true;
+
+    switch(priceRange) {
+        case '0-100': return cardPrice <= 100;
+        case '101-200': return cardPrice > 100 && cardPrice <= 200;
+        case '201-300': return cardPrice > 200 && cardPrice <= 300;
+        case '301-999': return cardPrice > 300 && cardPrice < 1000;
+        case '1000': return cardPrice === 1000;
+        default: return true;
+    }
+}
+
+function applySorting() {
+    if (activeFilters.sortOrder === 'default') {
+        // Ordenar alfabéticamente
+        displayedCards.sort((a, b) => {
+            const nameA = a.name.toLowerCase();
+            const nameB = b.name.toLowerCase();
+            return nameA.localeCompare(nameB);
+        });
+    } else {
+        // Ordenar por precio
+        const isAscending = activeFilters.sortOrder === 'asc';
+        displayedCards.sort((a, b) => {
+            const priceA = calculatePrice(a);
+            const priceB = calculatePrice(b);
+            return isAscending ? priceA - priceB : priceB - priceA;
+        });
+    }
+}
+
+function applyFilters() {
+    // Comenzamos con todas las cartas
+    displayedCards = [...originalCards];
+
+    // Aplicamos cada filtro por separado si está activo
+    if (activeFilters.name) {
+        displayedCards = displayedCards.filter(card =>
+            card.name.toLowerCase().includes(activeFilters.name.toLowerCase())
+        );
+    }
+
+    if (activeFilters.attribute) {
+        displayedCards = displayedCards.filter(card =>
+            card.attribute && card.attribute.toLowerCase() === activeFilters.attribute.toLowerCase()
+        );
+    }
+
+    if (activeFilters.level) {
+        displayedCards = displayedCards.filter(card =>
+            isInLevelRange(card.level, activeFilters.level)
+        );
+    }
+
+    if (activeFilters.subtype) {
+        displayedCards = displayedCards.filter(card =>
+            card.race && card.race.toLowerCase() === activeFilters.subtype.toLowerCase()
+        );
+    }
+
+    // Filtro por rango de precio
+    if (activeFilters.priceRange) {
+        displayedCards = displayedCards.filter(card =>
+            isInPriceRange(calculatePrice(card), activeFilters.priceRange)
+        );
+    }
+
+    // Aplicar ordenamiento
+    applySorting();
+
+    currentPage = 1;
+    renderCurrentPage();
+    setupPagination();
+}
+
+function setupFilterListeners() {
+    // Búsqueda por nombre
+    const searchInput = document.querySelector('.filter-item input[type="text"]');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            activeFilters.name = e.target.value.trim();
+            applyFilters();
+        });
+    }
+
+    // Filtros de selección
+    const filterSelects = {
+        'attribute': 'attribute',
+        'level': 'level',
+        'subtype': 'subtype',
+        'price-range': 'priceRange'
+    };
+
+    Object.entries(filterSelects).forEach(([name, filterKey]) => {
+        const select = document.querySelector(`select[name="${name}"]`);
+        if (select) {
+            select.addEventListener('change', (e) => {
+                activeFilters[filterKey] = e.target.value;
+                applyFilters();
+            });
+        }
+    });
+
+    // Ordenamiento
+    const sortSelect = document.querySelector('select[name="sort-order"]');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', (e) => {
+            activeFilters.sortOrder = e.target.value;
+            applyFilters();
+        });
+    }
+}
+
 function setupPagination() {
-    const totalPages = Math.ceil(allCards.length / CARDS_PER_PAGE);
+    const totalPages = Math.ceil(displayedCards.length / CARDS_PER_PAGE);
     const paginationContainer = document.querySelector('.pagination');
+    if (!paginationContainer) return;
+
     paginationContainer.innerHTML = '';
 
     // Botón "Anterior"
@@ -83,54 +195,30 @@ function setupPagination() {
     }
     paginationContainer.appendChild(prevButton);
 
-    // Determinar qué números de página mostrar
-    let pagesToShow = [];
-    const maxVisiblePages = 5; // Número máximo de páginas a mostrar
-
-    if (totalPages <= maxVisiblePages) {
-        // Si hay pocas páginas, mostrar todas
-        pagesToShow = Array.from({length: totalPages}, (_, i) => i + 1);
-    } else {
-        // Siempre mostrar la primera página
-        pagesToShow.push(1);
-
-        // Calcular el rango de páginas alrededor de la página actual
-        let start = Math.max(2, currentPage - 1);
-        let end = Math.min(totalPages - 1, currentPage + 1);
-
-        // Ajustar si estamos cerca del inicio o final
-        if (currentPage <= 2) {
-            end = 4;
-        }
-        if (currentPage >= totalPages - 1) {
-            start = totalPages - 3;
-        }
-
-        // Agregar el rango de páginas
-        for (let i = start; i <= end; i++) {
-            pagesToShow.push(i);
-        }
-
-        // Siempre mostrar la última página
-        if (!pagesToShow.includes(totalPages)) {
-            pagesToShow.push(totalPages);
+    // Números de página
+    for (let i = 1; i <= totalPages; i++) {
+        if (totalPages <= 7 ||
+            i === 1 ||
+            i === totalPages ||
+            (i >= currentPage - 1 && i <= currentPage + 1)) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            if (i === currentPage) {
+                pageButton.className = 'active';
+            }
+            pageButton.onclick = () => {
+                currentPage = i;
+                renderCurrentPage();
+                setupPagination();
+            };
+            paginationContainer.appendChild(pageButton);
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            const dots = document.createElement('span');
+            dots.textContent = '...';
+            dots.className = 'pagination-dots';
+            paginationContainer.appendChild(dots);
         }
     }
-
-    // Crear los botones de página
-    pagesToShow.forEach(pageNum => {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = pageNum;
-        if (pageNum === currentPage) {
-            pageButton.className = 'active';
-        }
-        pageButton.onclick = () => {
-            currentPage = pageNum;
-            renderCurrentPage();
-            setupPagination();
-        };
-        paginationContainer.appendChild(pageButton);
-    });
 
     // Botón "Siguiente"
     const nextButton = document.createElement('button');
@@ -148,30 +236,52 @@ function setupPagination() {
     paginationContainer.appendChild(nextButton);
 }
 
-// Función de filtrado
-function filterCards(searchTerm = '') {
-    allCards = allCards.filter(card =>
-        card.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    currentPage = 1;
-    renderCurrentPage();
-    setupPagination();
+function renderCurrentPage() {
+    const container = document.getElementById('cardsContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (displayedCards.length === 0) {
+        container.innerHTML = '<p class="no-results">No se encontraron cartas que coincidan con tu búsqueda.</p>';
+        return;
+    }
+
+    const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
+    const endIndex = startIndex + CARDS_PER_PAGE;
+    const cardsToShow = displayedCards.slice(startIndex, endIndex);
+
+    cardsToShow.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'card-item';
+
+        const price = calculatePrice(card);
+
+        cardElement.innerHTML = `
+            <img src="${card.image_url}" alt="${card.name}" 
+                 loading="lazy"
+                 onerror="this.src='images/card-back.jpg'"
+                 class="card-image">
+            <div class="card-info">
+                <h4 class="card-name">${card.name}</h4>
+                ${card.level ? `<p class="card-level">Nivel ${card.level}</p>` : ''}
+                <p class="card-price">${price} PM</p>
+                <button class="btn add-to-cart" 
+                        onclick="addToCart('${card.name}', ${price})">
+                    Agregar al Carrito
+                </button>
+            </div>
+        `;
+
+        container.appendChild(cardElement);
+    });
 }
 
-// Función para agregar al carrito
 function addToCart(cardName, price) {
-    console.log(`Agregando ${cardName} al carrito - Precio: ${price} PM`);
-    alert(`${cardName} agregado al carrito`);
+    alert(`${cardName} agregado al carrito - Precio: ${price} PM`);
 }
 
-// Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
     loadCards();
-
-    const searchInput = document.querySelector('.filter-item input[type="text"]');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            filterCards(e.target.value);
-        });
-    }
+    setupFilterListeners();
 });
