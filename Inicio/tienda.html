@@ -59,7 +59,7 @@
                 <option value="1-3">Nivel 1-3</option>
                 <option value="4-5">Nivel 4-5</option>
                 <option value="6-8">Nivel 6-8</option>
-                <option value="10">Nivel 10</option>
+                <option value="10+">Nivel 10-12</option>
             </select>
         </div>
         <div class="filter-item">
@@ -79,12 +79,37 @@
                 <option value="divine-beast">Bestia Divina</option>
             </select>
         </div>
+
+        <!-- Filtros de precio -->
+        <div class="filter-item">
+
+            <select name="price-range" id="price-range">
+                <option value="">Todos los precios</option>
+                <option value="0-100">100 PM o menos</option>
+                <option value="101-200">101 - 200 PM</option>
+                <option value="201-300">201 - 300 PM</option>
+                <option value="301-999">301 - 999 PM</option>
+                <option value="1000">1000 PM</option>
+            </select>
+        </div>
+        <!-- Selector de ordenamiento -->
+        <div class="filter-item">
+
+            <select name="sort-order" id="sort-order">
+                <option value="default">Alfabético</option>
+                <option value="asc">Menor Precio</option>
+                <option value="desc">Mayor Precio</option>
+            </select>
+        </div>
     </div>
 </section>
 
+
+
+
 <!-- Catálogos -->
-<div class="catalogs">
-    <!-- Catálogo de Cartas -->
+<div class="main-content">
+    <!-- Sección de cartas (tu contenedor actual de cartas) -->
     <section class="catalog-section">
         <h3>Catálogo de Cartas</h3>
         <div class="catalog-grid" id="cardsContainer">
@@ -93,11 +118,12 @@
 
     </section>
 
-
-    <!-- Catálogo de Paquetes -->
+    <!-- Sección de paquetes -->
     <section class="catalog-section">
         <h3>Catálogo de Paquetes</h3>
-        <div class="catalog-grid">
+
+        <!-- Paquete Básico -->
+        <div class="package-row">
             <div class="package-item">
                 <img src="imagenes/basic_pack.jpg" alt="Paquete Básico">
                 <div class="package-info">
@@ -107,7 +133,10 @@
                     <button class="btn">Comprar Paquete</button>
                 </div>
             </div>
+        </div>
 
+        <!-- Paquete Medio -->
+        <div class="package-row">
             <div class="package-item">
                 <img src="imagenes/medium_pack.jpg" alt="Paquete Medio">
                 <div class="package-info">
@@ -117,7 +146,10 @@
                     <button class="btn">Comprar Paquete</button>
                 </div>
             </div>
+        </div>
 
+        <!-- Paquete Premium -->
+        <div class="package-row">
             <div class="package-item">
                 <img src="imagenes/premium_pack.jpg" alt="Paquete Premium">
                 <div class="package-info">
