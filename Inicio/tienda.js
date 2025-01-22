@@ -1,7 +1,175 @@
+class ImageModal {
+    constructor() {
+        this.modalOverlay = null;
+        this.modalContent = null;
+        this.modalImage = null;
+        this.closeButton = null;
+        this.isAnimating = false;
+        this.isDragging = false;
+        this.lastX = 0;
+        this.lastY = 0;
+        this.currentZoom = 1;
+        this.magnifierSize = 150; // Tamaño de la lupa
+        this.magnifier = null;
+
+        // Bind methods
+        this.close = this.close.bind(this);
+        this.handleOverlayClick = this.handleOverlayClick.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleMouseMove = this.handleMouseMove.bind(this);
+        this.handleMouseEnter = this.handleMouseEnter.bind(this);
+        this.handleMouseLeave = this.handleMouseLeave.bind(this);
+        this.handleWheel = this.handleWheel.bind(this);
+    }
+
+    create(imageSrc) {
+        if (document.querySelector('.modal-overlay')) {
+            return;
+        }
+
+        this.modalOverlay = document.createElement('div');
+        this.modalOverlay.className = 'modal-overlay';
+
+        this.modalContent = document.createElement('div');
+        this.modalContent.className = 'card-modal';
+
+        // Crear contenedor para la imagen
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'modal-image-container';
+
+        // Crear y configurar la imagen principal
+        this.modalImage = document.createElement('img');
+        this.modalImage.className = 'modal-image';
+        this.modalImage.src = imageSrc;
+        this.modalImage.alt = 'Carta ampliada';
+
+        // Crear la lupa
+        this.magnifier = document.createElement('div');
+        this.magnifier.className = 'magnifier';
+        this.magnifier.style.display = 'none';
+        this.magnifier.style.backgroundImage = `url(${imageSrc})`;
+
+        // Crear botón de cerrar
+        this.closeButton = document.createElement('button');
+        this.closeButton.className = 'modal-close';
+        this.closeButton.setAttribute('aria-label', 'Cerrar modal');
+        this.closeButton.innerHTML = '×';
+
+        // Ensamblar el modal
+        imageContainer.appendChild(this.modalImage);
+        imageContainer.appendChild(this.magnifier);
+        this.modalContent.appendChild(imageContainer);
+        this.modalContent.appendChild(this.closeButton);
+        this.modalOverlay.appendChild(this.modalContent);
+        document.body.appendChild(this.modalOverlay);
+
+        // Agregar event listeners
+        this.addEventListeners();
+
+        requestAnimationFrame(() => {
+            this.modalOverlay.classList.add('fade-in');
+            this.modalContent.classList.add('fade-in');
+        });
+    }
+
+    addEventListeners() {
+        this.closeButton.addEventListener('click', this.close);
+        this.modalOverlay.addEventListener('click', this.handleOverlayClick);
+        document.addEventListener('keydown', this.handleKeyPress);
+
+        // Event listeners para la lupa
+        this.modalImage.addEventListener('mousemove', this.handleMouseMove);
+        this.modalImage.addEventListener('mouseenter', this.handleMouseEnter);
+        this.modalImage.addEventListener('mouseleave', this.handleMouseLeave);
+        this.modalImage.addEventListener('wheel', this.handleWheel);
+    }
+
+    removeEventListeners() {
+        this.closeButton.removeEventListener('click', this.close);
+        this.modalOverlay.removeEventListener('click', this.handleOverlayClick);
+        document.removeEventListener('keydown', this.handleKeyPress);
+
+        this.modalImage.removeEventListener('mousemove', this.handleMouseMove);
+        this.modalImage.removeEventListener('mouseenter', this.handleMouseEnter);
+        this.modalImage.removeEventListener('mouseleave', this.handleMouseLeave);
+        this.modalImage.removeEventListener('wheel', this.handleWheel);
+    }
+
+    handleMouseMove(e) {
+        const rect = this.modalImage.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Calcular posición relativa (0-1)
+        const xRelative = x / rect.width;
+        const yRelative = y / rect.height;
+
+        // Mover la lupa
+        this.magnifier.style.left = `${x - this.magnifierSize/2}px`;
+        this.magnifier.style.top = `${y - this.magnifierSize/2}px`;
+
+        // Actualizar posición del background de la lupa
+        const magnification = 2; // Factor de aumento
+        const bgX = xRelative * 100;
+        const bgY = yRelative * 100;
+        this.magnifier.style.backgroundPosition = `${bgX}% ${bgY}%`;
+        this.magnifier.style.backgroundSize = `${rect.width * magnification}px ${rect.height * magnification}px`;
+    }
+
+    handleMouseEnter() {
+        this.magnifier.style.display = 'block';
+    }
+
+    handleMouseLeave() {
+        this.magnifier.style.display = 'none';
+    }
+
+    handleWheel(e) {
+        e.preventDefault();
+        const magnification = e.deltaY > 0 ? -0.2 : 0.2;
+        const newSize = this.magnifierSize + (magnification * 50);
+
+        if (newSize >= 100 && newSize <= 300) {
+            this.magnifierSize = newSize;
+            this.magnifier.style.width = `${this.magnifierSize}px`;
+            this.magnifier.style.height = `${this.magnifierSize}px`;
+        }
+    }
+
+    handleOverlayClick(e) {
+        if (e.target === this.modalOverlay) {
+            this.close();
+        }
+    }
+
+    handleKeyPress(e) {
+        if (e.key === 'Escape') {
+            this.close();
+        }
+    }
+
+    close() {
+        if (this.isAnimating) return;
+
+        this.isAnimating = true;
+
+        this.modalOverlay.classList.remove('fade-in');
+        this.modalContent.classList.add('fade-out');
+
+        setTimeout(() => {
+            this.removeEventListeners();
+            this.modalOverlay.remove();
+            this.isAnimating = false;
+        }, 300);
+    }
+}
+
+// Card system variables
 let originalCards = [];
 let displayedCards = [];
-const CARDS_PER_PAGE = 8;
+const CARDS_PER_PAGE = 9;
 let currentPage = 1;
+const imageModal = new ImageModal();
 
 let activeFilters = {
     name: '',
@@ -19,12 +187,10 @@ async function loadCards() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        // Filtrar solo cartas con nivel
         originalCards = Object.values(data)
             .flat()
             .filter(card => card.level !== undefined && card.level !== null);
 
-        // Ordenar alfabéticamente por defecto
         originalCards.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
         displayedCards = [...originalCards];
         renderCurrentPage();
@@ -74,14 +240,12 @@ function isInPriceRange(cardPrice, priceRange) {
 
 function applySorting() {
     if (activeFilters.sortOrder === 'default') {
-        // Ordenar alfabéticamente
         displayedCards.sort((a, b) => {
             const nameA = a.name.toLowerCase();
             const nameB = b.name.toLowerCase();
             return nameA.localeCompare(nameB);
         });
     } else {
-        // Ordenar por precio
         const isAscending = activeFilters.sortOrder === 'asc';
         displayedCards.sort((a, b) => {
             const priceA = calculatePrice(a);
@@ -92,10 +256,8 @@ function applySorting() {
 }
 
 function applyFilters() {
-    // Comenzamos con todas las cartas
     displayedCards = [...originalCards];
 
-    // Aplicamos cada filtro por separado si está activo
     if (activeFilters.name) {
         displayedCards = displayedCards.filter(card =>
             card.name.toLowerCase().includes(activeFilters.name.toLowerCase())
@@ -120,14 +282,12 @@ function applyFilters() {
         );
     }
 
-    // Filtro por rango de precio
     if (activeFilters.priceRange) {
         displayedCards = displayedCards.filter(card =>
             isInPriceRange(calculatePrice(card), activeFilters.priceRange)
         );
     }
 
-    // Aplicar ordenamiento
     applySorting();
 
     currentPage = 1;
@@ -136,7 +296,6 @@ function applyFilters() {
 }
 
 function setupFilterListeners() {
-    // Búsqueda por nombre
     const searchInput = document.querySelector('.filter-item input[type="text"]');
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
@@ -145,7 +304,6 @@ function setupFilterListeners() {
         });
     }
 
-    // Filtros de selección
     const filterSelects = {
         'attribute': 'attribute',
         'level': 'level',
@@ -163,7 +321,6 @@ function setupFilterListeners() {
         }
     });
 
-    // Ordenamiento
     const sortSelect = document.querySelector('select[name="sort-order"]');
     if (sortSelect) {
         sortSelect.addEventListener('change', (e) => {
@@ -180,7 +337,6 @@ function setupPagination() {
 
     paginationContainer.innerHTML = '';
 
-    // Botón "Anterior"
     const prevButton = document.createElement('button');
     prevButton.textContent = '←';
     prevButton.onclick = () => {
@@ -195,7 +351,6 @@ function setupPagination() {
     }
     paginationContainer.appendChild(prevButton);
 
-    // Números de página
     for (let i = 1; i <= totalPages; i++) {
         if (totalPages <= 7 ||
             i === 1 ||
@@ -220,7 +375,6 @@ function setupPagination() {
         }
     }
 
-    // Botón "Siguiente"
     const nextButton = document.createElement('button');
     nextButton.textContent = '→';
     nextButton.onclick = () => {
@@ -264,7 +418,6 @@ function renderCurrentPage() {
                  class="card-image">
             <div class="card-info">
                 <h4 class="card-name">${card.name}</h4>
-                ${card.level ? `<p class="card-level">Nivel ${card.level}</p>` : ''}
                 <p class="card-price">${price} PM</p>
                 <button class="btn add-to-cart" 
                         onclick="addToCart('${card.name}', ${price})">
@@ -272,6 +425,13 @@ function renderCurrentPage() {
                 </button>
             </div>
         `;
+
+        // Add modal functionality to the card image
+        const cardImage = cardElement.querySelector('img');
+        cardImage.style.cursor = 'pointer';
+        cardImage.addEventListener('click', () => {
+            imageModal.create(card.image_url);
+        });
 
         container.appendChild(cardElement);
     });
@@ -281,6 +441,7 @@ function addToCart(cardName, price) {
     alert(`${cardName} agregado al carrito - Precio: ${price} PM`);
 }
 
+// Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     loadCards();
     setupFilterListeners();
