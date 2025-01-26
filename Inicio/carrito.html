@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="carrito.css">
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <header>
+        <nav class="navbar">
+        <div class="logo">
+            <img src="logo/logokamegame.webp" alt="Logo Kame Game">
+        </div>
+        <ul class="nav-links">
+            <li><a href="inicio.html" >Inicio</a></li>
+            <li><a href="tienda.html">Tienda</a></li>
+            <li><a href="duelo.html">Duelo</a></li>
+            <li><a href="inventario.html">Inventario</a></li>
+        </ul>
+        <div class="user-cart">
+            <a href="perfil.html"><img src="logo/logo perfil.webp" alt="Usuario"></a>
+            <a href="carrito.html"><img src="logo/logocarrito.png" alt="Carrito"></a>
+        </div>
+        </nav>
+    </header>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <h1>Carrito</h1>
+        <div class="cart-section">
+            <div class="cart-items">
+                <h2>Resumen de compra</h2>
+                <div class="item">
+                    <img src="https://images.ygoprodeck.com/images/cards/98319530.jpg" alt="Producto">
+                    <div class="item-info">
+                        <p class="product-name">Producto X</p>
+                        <p class="description">Descripción</p>
+                    </div>
+                    <div class="quantity">
+                        <button>-</button>
+                        <input type="text" value="1">
+                        <button>+</button>
+                    </div>
+                    <p class="price">$0.00</p>
+                </div>
+
+                <div class="item">
+                    <img src="https://images.ygoprodeck.com/images/cards/90861137.jpg" alt="Producto">
+                    <div class="item-info">
+                        <p class="product-name">Producto Y</p>
+                        <p class="description">Descripción</p>
+                    </div>
+                    <div class="quantity">
+                        <button>-</button>
+                        <input type="text" value="1">
+                        <button>+</button>
+                    </div>
+                    <p class="price">$0.00</p>
+                </div>
+            </div>
+
+            <div class="summary">
+                <h2>Resumen de compra</h2>
+                <ul>
+                    <li>Producto X - $13.31</li>
+                    <li>Producto Y - $19.24</li>
+                    <li>Producto Z - $14.22</li>
+                    <li>Producto W - $1.76</li>
+                </ul>
+                <p><strong>Total:</strong> $48.53</p>
+                <button class="btn-buy">Comprar</button>
+            </div>
+        </div>
+
+        <div class="related-products">
+            <h2>También te podría interesar</h2>
+            <div class="product">
+                <img src="https://images.ygoprodeck.com/images/cards/31247589.jpg" alt="Producto">
+                <p>Producto</p>
+                <p>Descripción</p>
+            </div>
+            <div class="product">
+                <img src="https://images.ygoprodeck.com/images/cards/2067935.jpg" alt="Producto">
+                <p>Producto</p>
+                <p>Descripción</p>
+            </div>
+            <div class="product">
+                <img src="https://images.ygoprodeck.com/images/cards/66403530.jpg" alt="Producto">
+                <p>Producto</p>
+                <p>Descripción</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Kame-Game. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
