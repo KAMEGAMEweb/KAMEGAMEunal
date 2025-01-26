@@ -231,10 +231,21 @@ transform: scale(1.1);
     color: #bbb;
 }
 
-/* --- Pie de Página --- */
+/* Pie de página */
 .footer {
     background-color: #0d0d22;
-    padding: 10px;
+    color: white;
     text-align: center;
-    color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
 }

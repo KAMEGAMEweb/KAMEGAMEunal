@@ -1,4 +1,4 @@
-// Lista de mensajes aleatorios
+// Lista de mensajes para la sección de noticias
 const messages = [
     "¡Mira la nueva carta!",
     "¡Esta carta espera por ti!",
@@ -25,9 +25,9 @@ async function fetchCards() {
     }
 }
 
-// Función para actualizar las noticias con animación
-function updateNewsWithAnimation(cards) {
-    const container = document.getElementById('news-container');
+// Función para actualizar la sección con animación (aplicada a noticias o tienda)
+function updateSectionWithAnimation(containerId, cards, filterFn, generateHTMLFn) {
+    const container = document.getElementById(containerId);
 
     // Añade la clase de fade-out
     container.classList.add('fade-out');
@@ -36,20 +36,15 @@ function updateNewsWithAnimation(cards) {
     setTimeout(() => {
         container.innerHTML = ''; // Limpia el contenido actual
 
-        // Selección aleatoria de 3 cartas
-        const randomCards = cards['Effect Monster']
+        // Filtra y selecciona aleatoriamente las cartas
+        const filteredCards = cards['Effect Monster'].filter(filterFn)
             .sort(() => 0.5 - Math.random()) // Mezcla aleatoria
-            .slice(0, 3); // Selecciona las primeras 3
+            .slice(0, 4); // Selecciona las primeras 3
 
-        // Genera el HTML de las noticias
-        randomCards.forEach(card => {
-            const newsItem = document.createElement('div');
-            newsItem.className = 'news-item';
-            newsItem.innerHTML = `
-                <img src="${card.image_url}" alt="${card.name}">
-                <p>${getRandomMessage()}</p>
-            `;
-            container.appendChild(newsItem);
+        // Genera el HTML de cada carta
+        filteredCards.forEach(card => {
+            const itemHTML = generateHTMLFn(card);
+            container.appendChild(itemHTML);
         });
 
         // Añade la clase de fade-in después de limpiar
@@ -63,16 +58,59 @@ function updateNewsWithAnimation(cards) {
     }, 1000); // Duración del fade-out
 }
 
-// Inicialización
-async function initNewsUpdater() {
-    const cards = await fetchCards(); // Carga las cartas del JSON
-    if (cards) {
-        updateNewsWithAnimation(cards); // Muestra las primeras noticias
+// Genera el HTML para una carta en la sección de noticias
+function generateNewsHTML(card) {
+    const newsItem = document.createElement('div');
+    newsItem.className = 'news-item';
+    newsItem.innerHTML = `
+        <img src="${card.image_url}" alt="${card.name}">
+        <p>${getRandomMessage()}</p>
+    `;
+    return newsItem;
+}
 
-        // Cambia las noticias cada 30 segundos con animación
-        setInterval(() => updateNewsWithAnimation(cards), 30000);
+// Genera el HTML para una carta en la sección de tienda
+function generateShopHTML(card) {
+    const shopItem = document.createElement('div');
+    shopItem.className = 'shop-item';
+    shopItem.innerHTML = `
+        <img src="${card.image_url}" alt="${card.name}">
+        <button class="shop-button" onclick="goToShop()">Ir a la tienda</button>
+    `;
+    return shopItem;
+}
+
+// Función para redirigir a tienda.html
+function goToShop() {
+    window.location.href = 'tienda.html';
+}
+
+// Inicialización de la sección de noticias
+async function initNewsSection() {
+    const cards = await fetchCards();
+    if (cards) {
+        updateSectionWithAnimation('news-container', cards, () => true, generateNewsHTML);
+        setInterval(() => updateSectionWithAnimation('news-container', cards, () => true, generateNewsHTML), 30000);
     }
 }
 
-// Ejecuta la inicialización cuando la página se carga
-document.addEventListener('DOMContentLoaded', initNewsUpdater);
+// Inicialización de la sección de tienda
+async function initShopSection() {
+    const cards = await fetchCards();
+    if (cards) {
+        updateSectionWithAnimation(
+            'shop-container',
+            cards,
+            card => card.atk !== null || card.def !== null, // Filtra cartas con atk o def definidos
+            generateShopHTML
+        );
+        setInterval(() => updateSectionWithAnimation('shop-container', cards, 
+            card => card.atk !== null || card.def !== null, generateShopHTML), 30000);
+    }
+}
+
+// Ejecuta las inicializaciones cuando la página se carga
+document.addEventListener('DOMContentLoaded', () => {
+    initNewsSection();
+    initShopSection();
+});

@@ -108,7 +108,7 @@ transform: scale(1.1);
 
 .news-item p {
     font-size: 14px;
-    color: #666;
+    color: #fff;
 }
 
 /* Sección Tienda */
@@ -150,6 +150,24 @@ transform: scale(1.1);
     font-size: 14px;
     color: #666;
 }
+
+.shop-item .shop-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #2e04c5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.shop-item .shop-button:hover {
+    background-color: #4b27e5;
+}
+
 
 /* Pie de página */
 .footer {
