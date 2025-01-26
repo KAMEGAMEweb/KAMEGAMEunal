@@ -1,26 +1,31 @@
+// Fetch de los datos del JSON y renderizado de las cartas en el contenedor
+async function loadNews() {
+    try {
+        const response = await fetch('imagenes/yu_gi_oh_detailed_cards.json'); // Asegúrate de que la ruta sea correcta
+        const data = await response.json();
 
-document.addEventListener("DOMContentLoaded", () => {
-    fetch("yu_gi_oh_detailed_cards.json")
-        .then(response => response.json())
-        .then(data => {
-            const noticiasContainer = document.getElementById("noticiasContainer");
-            const cartas = data["Effect Monster"].slice(0, 6); // Limitar a 6 noticias
+        // Selección aleatoria de elementos
+        const randomCards = data['Effect Monster']
+            .sort(() => 0.5 - Math.random()) // Mezcla aleatoria
+            .slice(0, 3); // Toma los primeros 3 elementos
 
-            cartas.forEach(carta => {
-                const noticia = document.createElement("div");
-                noticia.className = "noticia-item";
+        const container = document.getElementById('news-container');
 
-                noticia.innerHTML = `
-                    <img src="${carta.image_url}" alt="${carta.name}">
-                    <h3>${carta.name}</h3>
-                    <p>${carta.desc.substring(0, 100)}...</p>
-                `;
-
-                noticiasContainer.appendChild(noticia);
-            });
-        })
-        .catch(error => {
-            console.error("Error al cargar las noticias:", error);
-            document.getElementById("noticiasContainer").innerHTML = "<p>Error al cargar las noticias.</p>";
+        // Genera el HTML para cada carta
+        randomCards.forEach(card => {
+            const newsItem = document.createElement('div');
+            newsItem.className = 'news-item';
+            newsItem.innerHTML = `
+                <img src="${card.image_url}" alt="${card.name}">
+                <p>${card.name}</p>
+                <p>${card.desc}</p>
+            `;
+            container.appendChild(newsItem);
         });
-});
+    } catch (error) {
+        console.error('Error al cargar las noticias:', error);
+    }
+}
+
+// Ejecuta la función al cargar la página
+document.addEventListener('DOMContentLoaded', loadNews);
