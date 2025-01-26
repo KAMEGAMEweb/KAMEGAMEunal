@@ -59,6 +59,19 @@ transform: scale(1.1);
     
 
 /* Sección Noticias */
+/* Animaciones para las noticias */
+#news-container {
+    transition: opacity 1s ease-in-out;
+}
+
+#news-container.fade-out {
+    opacity: 0; /* Desaparece gradualmente */
+}
+
+#news-container.fade-in {
+    opacity: 1; /* Aparece gradualmente */
+}
+
 .news {
     padding: 20px;
     background-color: #1e1e2f;
