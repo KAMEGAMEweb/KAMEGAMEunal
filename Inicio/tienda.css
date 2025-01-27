@@ -502,6 +502,28 @@ body {
     }
 }
 
+/* Agregar al carrito */
+.btn.add-to-cart {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #6200ee;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: auto;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px;
+}
+
+.btn.add-to-cart:hover {
+    background-color: #7722ff;
+}
+
+
 /* Pie de página */
 .footer {
     background-color: #0d0d22;

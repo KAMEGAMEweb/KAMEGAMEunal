@@ -446,3 +446,82 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCards();
     setupFilterListeners();
 });
+
+// Obtener el carrito desde localStorage
+function getCart() {
+    const cart = localStorage.getItem('cart');
+    return cart ? JSON.parse(cart) : [];
+}
+
+// Guardar el carrito en localStorage
+function saveCart(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// Agregar producto al carrito
+function addToCart(cardName, price, image) {
+    const cart = getCart();
+    const existingItem = cart.find(item => item.name === cardName);
+
+    if (existingItem) {
+        existingItem.quantity += 1; // Incrementa la cantidad si ya existe
+    } else {
+        cart.push({
+            name: cardName,
+            price: price,
+            image: image,
+            quantity: 1
+        });
+    }
+
+    saveCart(cart);
+    alert(`${cardName} se agregó al carrito.`);
+}
+
+// Renderizar las cartas con el botón de "Agregar al carrito"
+function renderCurrentPage() {
+    const container = document.getElementById('cardsContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (displayedCards.length === 0) {
+        container.innerHTML = '<p class="no-results">No se encontraron cartas que coincidan con tu búsqueda.</p>';
+        return;
+    }
+
+    const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
+    const endIndex = startIndex + CARDS_PER_PAGE;
+    const cardsToShow = displayedCards.slice(startIndex, endIndex);
+
+    cardsToShow.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'card-item';
+
+        const price = calculatePrice(card);
+
+        cardElement.innerHTML = `
+            <img src="${card.image_url}" alt="${card.name}" 
+                 loading="lazy"
+                 onerror="this.src='images/card-back.jpg'"
+                 class="card-image">
+            <div class="card-info">
+                <h4 class="card-name">${card.name}</h4>
+                <p class="card-price">${price} PM</p>
+                <button class="btn add-to-cart" 
+                        onclick="addToCart('${card.name}', ${price}, '${card.image_url}')">
+                    Agregar al Carrito
+                </button>
+            </div>
+        `;
+
+        // Modal para visualizar la carta
+        const cardImage = cardElement.querySelector('img');
+        cardImage.style.cursor = 'pointer';
+        cardImage.addEventListener('click', () => {
+            imageModal.create(card.image_url);
+        });
+
+        container.appendChild(cardElement);
+    });
+}
