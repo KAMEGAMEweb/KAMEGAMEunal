@@ -121,17 +121,41 @@ function buyAll() {
         return;
     }
 
-    // Simular la compra
-    alert(`¡Gracias por tu compra! Has pagado $${cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}.`);
-    
-    // Vaciar el carrito después de la compra
-    saveCart([]);
-    renderCart();
-    updateSummary();
+    // Obtener el inventario actual y añadir las cartas del carrito
+    const inventory = getInventory();
+    cart.forEach(item => {
+        const existingItem = inventory.find(invItem => invItem.name === item.name);
+        if (existingItem) {
+            existingItem.quantity += item.quantity; // Si ya existe, suma las cantidades
+        } else {
+            inventory.push(item); // Si no existe, añádelo
+        }
+    });
+
+    saveInventory(inventory); // Guarda el inventario actualizado
+    saveCart([]); // Vacía el carrito
+
+    alert('Compra realizada con éxito. Tus cartas están ahora en el inventario.');
+    window.location.href = 'inventario.html'; // Redirige al inventario
 }
+
 
 // Inicializar el carrito al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
     renderCart();
     updateSummary();
 });
+
+
+// Obtener el inventario desde localStorage
+function getInventory() {
+    const inventory = localStorage.getItem('inventory');
+    return inventory ? JSON.parse(inventory) : [];
+}
+
+
+// Guardar el inventario en localStorage
+function saveInventory(inventory) {
+    localStorage.setItem('inventory', JSON.stringify(inventory));
+}
+
