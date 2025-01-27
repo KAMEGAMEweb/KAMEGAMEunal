@@ -50,7 +50,9 @@
                 <li><a href="#">Ventas</a></li>
                 <li><a href="#">Actividad</a></li>
                 <li><a href="#">Transacciones</a></li>
+                <li><button id="logout-button" class="logout-btn">Cerrar sesión</button></li>
             </ul>
+            
         </aside>
 
         <!-- Sección central: Información del usuario -->
@@ -127,5 +129,28 @@
             <a href="https://paypal.me/Juanaraque11?country.x=CO&locale.x=es_XC"><img src="https://cdn.worldvectorlogo.com/logos/paypal-pure-.svg" alt="PayPal" width="50" style="margin-right: 20px;"></a>
         </div>
     </footer>
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getLoggedInUser();
+            if (!user) {
+                alert('Por favor, inicia sesión primero.');
+                window.location.href = 'login.html';
+                return;
+            }
+    
+            document.getElementById('username').value = user.username;
+            document.getElementById('country').value = user.country;
+            document.querySelector('.profile-image img').src = user.avatar || 'logo/default-avatar.webp';
+            document.querySelector('.xp-fill').style.width = `${user.xp}%`;
+    
+            // Manejo del botón de cerrar sesión
+            const logoutButton = document.getElementById('logout-button');
+            logoutButton.addEventListener('click', () => {
+                logoutUser();
+            });
+        });
+    </script>
 </body>
 </html>
+

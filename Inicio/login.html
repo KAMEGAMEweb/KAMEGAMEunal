@@ -11,20 +11,19 @@
     <div class="login-form">
       <h1>Kame - Game</h1>
       <h2>Login</h2>
-      <form action="/login" method="POST">
-        <!-- Email Field -->
-
-        <div class="form-group"> <!-- Cambiar por usuario -->
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      <form onsubmit="handleLogin(event)">
+        <!-- Username Field -->
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your Username" required>
         </div>
-        
-        <!-- Password Field )-->
+
+        <!-- Password Field -->
         <div class="form-group">
           <label for="password">Password</label>
           <input type="password" id="password" name="password" placeholder="Enter your password" required>
         </div>
-        
+
         <!-- Form Options -->
         <div class="form-options">
           <label>
@@ -32,15 +31,29 @@
           </label>
           <a href="#" class="forgot-password">Forgot Your Password?</a>
         </div>
-        
+
         <!-- Submit Button -->
         <button type="submit">Log In</button>
       </form>
       <p class="signup-link">Don't have an account? <a href="register.html">Sign up now</a></p>
     </div>
     <div class="login-illustration">
-      <img src="logo/logokamegame.webp" alt="Rocket Illustration">
+      <img src="logo/logokamegame.webp" alt="Login Illustration">
     </div>
   </div>
+
+  <script src="auth.js"></script>
+  <script>
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (loginUser(username, password)) {
+        window.location.href = 'inicio.html';
+      }
+    }
+  </script>
 </body>
 </html>

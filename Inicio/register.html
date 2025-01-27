@@ -11,47 +11,76 @@
         <div class="login-form">
             <h1>Kame - Game</h1>
             <h2>Register</h2>
-            <form action="/register" method="POST">
-            
-            <!-- User Field -->
-            <div class="form-group">
-                <label for="user">User</label>
-                <input type="text" id="user" name="user" placeholder="Enter your user" required>
-            </div>
+            <form onsubmit="handleRegister(event)">
+                <!-- User Field -->
+                <div class="form-group">
+                    <label for="user">User</label>
+                    <input type="text" id="user" name="user" placeholder="Enter your user" required>
+                </div>
 
-            <!-- password Field -->
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
 
-            <!-- Confirm Password Field -->
-            <div class="form-group">
-                <label for="password">Confirm Password</label>
-                <input type="password" id="password" name="password" placeholder="Confirm your password" required>
-            </div>
+                <!-- Confirm Password Field -->
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+                </div>
 
-            <!-- Country Field (poenrlo para que sea seleccionar)--> 
-            <div class="form-group">
-                <label for="country">Country</label>
-                <input type="text" id="country" name="country" placeholder="Enter your country" required>
-            </div>
+                <!-- Country Field -->
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" id="country" name="country" placeholder="Enter your country" required>
+                </div>
 
-            <!-- Avatar Field (poner para elegir un avatar con imagenes que pongamos)-->
-            <div class="form-group">
-                <label for="avatar">Avatar</label>
-                <!-- Select an image from your device -->
-                <input type="file" id="avatar" name="avatar" accept="image/*" required>
-            </div>
+                <!-- Avatar Field -->
+                <div class="form-group">
+                    <label for="avatar">Avatar</label>
+                    <input type="file" id="avatar" name="avatar" accept="image/*" required>
+                </div>
 
-            <!-- Submit Button -->
-            <button type="submit">Register</button>
+                <!-- Submit Button -->
+                <button type="submit">Register</button>
             </form>
             <p class="register-link">Already have an account? <a href="login.html">Login</a></p>
         </div>
         <div class="login-illustration">
-            <img src="logo/logokamegame.webp" alt="Login Illustration">
+            <img src="logo/logokamegame.webp" alt="Register Illustration">
         </div>
     </div>
+
+    <script src="auth.js"></script>
+    <script>
+        function handleRegister(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('user').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const country = document.getElementById('country').value;
+            const avatarFile = document.getElementById('avatar').files[0];
+
+            if (password !== confirmPassword) {
+                alert('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.');
+                return;
+            }
+
+            // Leer la imagen como base64
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const avatar = e.target.result; // Imagen en formato base64
+                if (registerUser(username, password, country, avatar)) {
+                    window.location.href = 'login.html';
+                }
+            };
+
+            if (avatarFile) {
+                reader.readAsDataURL(avatarFile);
+            }
+        }
+    </script>
 </body>
 </html>
