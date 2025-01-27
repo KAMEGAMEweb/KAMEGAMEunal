@@ -5,18 +5,23 @@ function getInventory() {
 }
 
 // Renderizar las cartas del inventario
-function renderInventory() {
+function renderInventory(filter = '') {
     const inventory = getInventory();
     const inventoryGrid = document.getElementById('inventory-grid');
 
     inventoryGrid.innerHTML = '';
 
-    if (inventory.length === 0) {
-        inventoryGrid.innerHTML = '<p class="no-results">Tu inventario está vacío.</p>';
+    // Filtrar cartas por el término de búsqueda
+    const filteredInventory = inventory.filter(item =>
+        item.name.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    if (filteredInventory.length === 0) {
+        inventoryGrid.innerHTML = '<p class="no-results">No se encontraron cartas con ese nombre.</p>';
         return;
     }
 
-    inventory.forEach(item => {
+    filteredInventory.forEach(item => {
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
@@ -28,7 +33,26 @@ function renderInventory() {
     });
 }
 
+// Configurar el buscador
+function setupSearch() {
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
+
+    // Buscar al presionar el botón
+    searchButton.addEventListener('click', () => {
+        const searchTerm = searchInput.value.trim();
+        renderInventory(searchTerm);
+    });
+
+    // Buscar al escribir en tiempo real
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.trim();
+        renderInventory(searchTerm);
+    });
+}
+
 // Inicializar inventario al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
     renderInventory();
+    setupSearch();
 });

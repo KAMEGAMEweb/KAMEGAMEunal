@@ -71,29 +71,6 @@
     color: #fdfdfd;
   }
   
-  /* Submenu styles */
-  .submenu {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .submenu-btn {
-    padding: 10px 20px;
-    border: none;
-    background-color: #817373;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s;
-  }
-  
-  .submenu-btn.active,
-  .submenu-btn:hover {
-    background-color: #1e1e2f;
-    color: #fff;
-  }
-  
   /* Search bar styles */
   .search-bar {
     display: flex;
@@ -108,6 +85,7 @@
     border: 1px solid #ccc;
     background-color: #0d0d22;
     border-radius: 4px 0 0 4px;
+    color: #fff;
   }
   
   .search-bar button {
@@ -122,7 +100,7 @@
   }
   
   .search-bar button:hover {
-    background-color: #ff5555;
+    background-color: #07137b;
   }
   
   /* Card grid styles */
@@ -147,12 +125,20 @@
     margin-bottom: 10px;
   }
   
+  /* Resaltar el término de búsqueda en los resultados */
   .card h2 {
     font-size: 1rem;
-    margin-bottom: 8px;
-    color: #ffffff;
+    color: #fff;
   }
   
+  /* Mensaje de resultados vacíos */
+  .no-results {
+    text-align: center;
+    color: #ccc;
+    font-size: 1.2rem;
+    margin-top: 20px;
+  }
+
   .card p {
     font-size: 0.85rem;
     color: #869197;
